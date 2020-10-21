@@ -1,28 +1,12 @@
 const COLDOWN = 20;
 const DEFAULT_ERROR_MESSAGE = 'Ошибок нет';
 
-console.log("Popup DOM fully loaded and parsed");
-
-    function modifyDOM() {
-        //You can play with your DOM here or check URL against your regex
-        console.log('Tab script:');
-        console.log(document.querySelectorAll('.wo9IH button'));
-        return document.querySelectorAll('.wo9IH button');
-    }
-
-    //We have permission to access the activeTab, so we can call chrome.tabs.executeScript:
-    chrome.tabs.executeScript({
-        code: '(' + modifyDOM + ')();' //argument here is a string but function.toString() returns function's code
-    }, (results) => {
-        //Here we have just the innerHTML and not DOM structure
-        console.log('Popup script:');
-        console.log(results);
-    });
 class ViewModel {
     constructor() {
         this.isBusy = ko.observable(false);
         this.step = ko.observable(1);
         this.errorMessage = ko.observable();
+        this.countFollowers = ko.observable(0);
     }
 
     getIndex() {
@@ -98,19 +82,40 @@ class ViewModel {
                 setTimeout(follow, coldown * 1000);
             }
             follow();
+
+            return buttonsFiltered.length;
         }
 
         chrome.tabs.executeScript({
-            code: '(' + startFollow + ')();' //argument here is a string but function.toString() returns function's code
-        }, (results) => {
-            //Here we have just the innerHTML and not DOM structure
-            console.log('Popup script:');
-            console.log(results);
+            code: '(' + startFollow + ')();'
+        }, (countFollowers) => {
+            this.countFollowers(countFollowers ?? 0);
         });
     }
     
     stop() {
         this.isBusy(false);
+    }
+
+    updateCountFollowers() {
+        function checkFollowers() {
+            let buttons = document.querySelectorAll('.wo9IH button');
+            let buttonsFiltered = [];
+            for (let key in buttons) {
+                let button = buttons[key];
+                if ('Подписаться' === button.innerText) {
+                    buttonsFiltered.push(button);
+                }
+            }
+
+            return buttonsFiltered.length;
+        }
+
+        chrome.tabs.executeScript({
+            code: '(' + checkFollowers + ')();'
+        }, (countFollowers) => {
+            this.countFollowers(countFollowers ?? 0);
+        });
     }
 }
 

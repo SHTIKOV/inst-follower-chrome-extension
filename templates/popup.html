@@ -42,6 +42,15 @@
                     </span>
                 </div>
             </div> -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    Кол-во будущих подписок: <span data-bind="text: countFollowers"></span>
+                    <button type="button" class="btn btn-success btn-sm" data-bind="click: updateCountFollowers">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <button type="button" class="btn btn-info btn-block" data-bind="click: startOnPage, attr: { disabled: isBusy }">
