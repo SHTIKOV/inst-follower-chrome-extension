@@ -12,6 +12,8 @@ Then you need click on extension icon for open popup and start following.
 
 Congratulations! You started autowollowing.
 
+> Request sends one in 20 seconds.
+
 ## How to install
 In first time you need clone repository and then use `npm` command.
 ```sh
