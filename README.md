@@ -1,2 +1,2 @@
-# chrome-extension
-Clean template for create chrome extension
+# Instagram follower
+Simple chrome extension for add autofollow.
