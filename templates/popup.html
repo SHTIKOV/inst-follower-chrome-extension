@@ -2,14 +2,57 @@
 <html>
     <head>
         <meta charset="utf8">
+        <link rel="stylesheet" href="../assets/css/libs/font-awesome-4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="../assets/css/index.css">
     </head>
     <body>
         <div class="container page" id="popup">
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    Ошибка: <span data-bind="text: errorMessage"></span>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-success btn-block" data-bind="text: message"></button>
+                    <span data-bind="ifnot: isBusy">
+                        <i class="fa fa-pause" aria-hidden="true"></i> Остановлен
+                    </span>
+                    <span data-bind="if: isBusy">
+                        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i> В работе
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Шаг: <span data-bind="text: step"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span data-bind="ifnot: isBusy">
+                        <button type="button" class="btn btn-success btn-block" data-bind="click: startOnPage">
+                            Начать подписку <i class="fa fa-play" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                    <span data-bind="if: isBusy">
+                        <button type="button" class="btn btn-danger btn-block" data-bind="click: stop">
+                            Остановить <i class="fa fa-stop" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-info btn-block" data-bind="click: startOnPage, attr: { disabled: isBusy }">
+                        Начать подписку
+                        <!-- ko ifnot: isBusy -->
+                        <i class="fa fa-play" aria-hidden="true"></i>
+                        <!-- /ko -->
+                        <!-- ko if: isBusy -->
+                        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                        <!-- /ko -->
+                    </button>
                 </div>
             </div>
         </div>

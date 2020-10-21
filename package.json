@@ -1,0 +1,24 @@
+{
+  "name": "inst-follower-chrome-extension",
+  "version": "1.0.0",
+  "description": "Clean template for create chrome extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SHTIKOV/inst-follower-chrome-extension.git"
+  },
+  "author": "SHTIKOV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SHTIKOV/inst-follower-chrome-extension/issues"
+  },
+  "homepage": "https://github.com/SHTIKOV/inst-follower-chrome-extension#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "knockout": "^3.5.1"
+  }
+}

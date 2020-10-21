@@ -1,6 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "SHTIKOV Chrome Extension",
+    "name": "Instagram follower",
+    "description": "Simple extension for add autofollow.",
     "version": "1.0.0",
     "background": {
         "scripts": ["core/background.js"],
@@ -16,5 +17,6 @@
         "default_icon": "public/icon.png",
         "default_popup": "templates/popup.html"
     },
+    "permissions": ["activeTab", "tabs", "<all_urls>"],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
