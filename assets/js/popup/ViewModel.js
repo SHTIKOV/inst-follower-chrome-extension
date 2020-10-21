@@ -71,6 +71,7 @@ class ViewModel {
     }
 
     startOnPage() {
+        this.isBusy(true);
         function startFollow() {
             let index = 0;
             let coldown = 20;
