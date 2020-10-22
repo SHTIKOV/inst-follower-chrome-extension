@@ -22,33 +22,29 @@ class ViewModel {
     }
     
     start() {
-        let buttons = document.querySelectorAll('.wo9IH button');
-        let buttonsFiltered = [];
-        for (let key in buttons) {
-            let button = buttons[key];
-            if ('Подписаться' === button.innerText) {
-                buttonsFiltered.push(button);
-            }
-        }
+        let buttons = Array.from(document.querySelectorAll('.wo9IH button'));
+        let buttonsFiltered = buttons.filter((button)=> 'Подписаться' === button.innerText);
+        // for in  плохой выбор, так как довольно медленный и может пойти по свойствам в прототипе + не гарантирует порядок элементов
 
-        if (buttonsFiltered.length < 1) {
-            this.errorMessage('Подписчиков не найдено');
-            return;
-        }
 
-        let self = this;
+
+        if (buttonsFiltered.length < 1) return this.errorMessage('Подписчиков не найдено');
+        // просто люблю так делать, для краткости, возможно тут в условии будет выполняться что-то еще в будущем. но я про это не знаю
+
         function follow() {
-            if (buttonsFiltered.length <= self.getIndex()) {
-                self.isBusy(false);
-                self.cleanErrors();
+            if (buttonsFiltered.length <= this.getIndex()) {
+                this.isBusy(false);
+                this.cleanErrors();
                 return;
             }
-            self.incStep();
-            let button = buttonsFiltered[self.getIndex()];
+            this.incStep();
+            let button = buttonsFiltered[this.getIndex()];
 
             button.click();
 
-            setTimeout(follow, COLDOWN * 1000);
+            setTimeout(follow.bind(this) , COLDOWN * 1000);
+            //сделал bind вместо self
+
         }
         follow();
         this.isBusy(true);
