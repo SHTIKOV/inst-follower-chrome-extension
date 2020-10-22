@@ -95,23 +95,17 @@ class ViewModel {
 
     updateCountFollowers() {
         function checkFollowers() {
-            let buttons = document.querySelectorAll('.wo9IH button');
-            let buttonsFiltered = [];
-            for (let key in buttons) {
-                let button = buttons[key];
-                if ('Подписаться' === button.innerText) {
-                    buttonsFiltered.push(button);
-                }
-            }
-
+            let buttons = Array.from(document.querySelectorAll('.PZuss button')); //теперь мы не зависим от класса который то есть то его нет 
+            let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
             return buttonsFiltered.length;
         }
 
-        chrome.tabs.executeScript({
-            code: '(' + checkFollowers + ')();'
-        }, (countFollowers) => {
-            this.countFollowers(countFollowers ?? 0);
-        });
+        chrome.tabs.executeScript(
+            {
+                code: '(' + checkFollowers + ')();'
+            }, 
+            (countFollowers) => this.countFollowers(countFollowers ?? 0)
+        );
     }
 }
 
