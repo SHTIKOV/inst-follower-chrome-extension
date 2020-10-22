@@ -22,8 +22,8 @@ class ViewModel {
     }
     
     start() {
-        let buttons = Array.from(document.querySelectorAll('.wo9IH button'));
-        let buttonsFiltered = buttons.filter((button)=> 'Подписаться' === button.innerText);
+        let buttons = Array.from(document.querySelectorAll('.PZuss button'));  
+        let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
         // for in  плохой выбор, так как довольно медленный и может пойти по свойствам в прототипе + не гарантирует порядок элементов
 
 
@@ -52,28 +52,21 @@ class ViewModel {
 
     startOnPage() {
         this.isBusy(true);
+
         function startFollow() {
             let index = 0;
             let coldown = 20;
             let count = 0;
-            let buttons = document.querySelectorAll('.wo9IH button');
-            let buttonsFiltered = [];
-            for (let key in buttons) {
-                let button = buttons[key];
-                if ('Подписаться' === button.innerText) {
-                    buttonsFiltered.push(button);
-                }
-            }
+            let buttons = Array.from(document.querySelectorAll('.PZuss button')); //теперь мы не зависим от класса который то есть то его нет 
+            let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
+
+            console.log(buttonsFiltered);
             function follow() {
-                if (buttonsFiltered.length <= index) {
-                    return;
-                }
-                index++;
-                let button = buttonsFiltered[index];
-        
-                count++;
+                if (!buttonsFiltered.length) return;
+                let button = buttonsFiltered[index++];
+
                 button.click();
-                console.log('Current: '+count);
+                console.log('Current: ' + count++);
         
                 setTimeout(follow, coldown * 1000);
             }
@@ -82,11 +75,12 @@ class ViewModel {
             return buttonsFiltered.length;
         }
 
-        chrome.tabs.executeScript({
-            code: '(' + startFollow + ')();'
-        }, (countFollowers) => {
-            this.countFollowers(countFollowers ?? 0);
-        });
+        chrome.tabs.executeScript(
+            {
+                code: `(${startFollow})();`
+            }, 
+            (countFollowers) => this.countFollowers(countFollowers)
+        );
     }
     
     stop() {
@@ -102,9 +96,9 @@ class ViewModel {
 
         chrome.tabs.executeScript(
             {
-                code: '(' + checkFollowers + ')();'
+                code: `(${checkFollowers})();`
             }, 
-            (countFollowers) => this.countFollowers(countFollowers ?? 0)
+            (countFollowers) => this.countFollowers(countFollowers)
         );
     }
 }
