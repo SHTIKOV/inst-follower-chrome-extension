@@ -2,7 +2,7 @@
   "name": "inst-follower-chrome-extension",
   "version": "1.0.0",
   "description": "Clean template for create chrome extension",
-  "main": "index.js",
+  "main": "assets/js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +18,7 @@
   "homepage": "https://github.com/SHTIKOV/inst-follower-chrome-extension#readme",
   "dependencies": {
     "bootstrap": "^4.5.3",
+    "instagram-web-api": "^2.2.2",
     "jquery": "^3.5.1",
     "knockout": "^3.5.1"
   }

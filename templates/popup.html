@@ -46,6 +46,7 @@
             <div class="row">
                 <div class="col-md-12">
                     Кол-во будущих подписок: <span data-bind="text: countFollowers"></span>
+                    Время: <span data-bind="text: countFollowers() * 20"></span>
                     <button type="button" class="btn btn-success btn-sm" data-bind="click: updateCountFollowers">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </button>

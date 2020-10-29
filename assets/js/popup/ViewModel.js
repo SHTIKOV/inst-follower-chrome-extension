@@ -55,6 +55,7 @@ class ViewModel {
     }
 
     startOnPage() {
+        this.updateCountFollowers();
         this.isBusy(true);
         function startFollow() {
             let index = 0;
