@@ -22,33 +22,29 @@ class ViewModel {
     }
     
     start() {
-        let buttons = document.querySelectorAll('.wo9IH button');
-        let buttonsFiltered = [];
-        for (let key in buttons) {
-            let button = buttons[key];
-            if ('Подписаться' === button.innerText) {
-                buttonsFiltered.push(button);
-            }
-        }
+        let buttons = Array.from(document.querySelectorAll('.PZuss button'));  
+        let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
+        // for in  плохой выбор, так как довольно медленный и может пойти по свойствам в прототипе + не гарантирует порядок элементов
 
-        if (buttonsFiltered.length < 1) {
-            this.errorMessage('Подписчиков не найдено');
-            return;
-        }
 
-        let self = this;
+
+        if (buttonsFiltered.length < 1) return this.errorMessage('Подписчиков не найдено');
+        // просто люблю так делать, для краткости, возможно тут в условии будет выполняться что-то еще в будущем. но я про это не знаю
+
         function follow() {
-            if (buttonsFiltered.length <= self.getIndex()) {
-                self.isBusy(false);
-                self.cleanErrors();
+            if (buttonsFiltered.length <= this.getIndex()) {
+                this.isBusy(false);
+                this.cleanErrors();
                 return;
             }
-            self.incStep();
-            let button = buttonsFiltered[self.getIndex()];
+            this.incStep();
+            let button = buttonsFiltered[this.getIndex()];
 
             button.click();
 
-            setTimeout(follow, COLDOWN * 1000);
+            setTimeout(follow.bind(this) , COLDOWN * 1000);
+            //сделал bind вместо self
+
         }
         follow();
         this.isBusy(true);
@@ -57,28 +53,21 @@ class ViewModel {
     startOnPage() {
         this.updateCountFollowers();
         this.isBusy(true);
+
         function startFollow() {
             let index = 0;
             let coldown = 20;
             let count = 0;
-            let buttons = document.querySelectorAll('.wo9IH button');
-            let buttonsFiltered = [];
-            for (let key in buttons) {
-                let button = buttons[key];
-                if ('Подписаться' === button.innerText) {
-                    buttonsFiltered.push(button);
-                }
-            }
+            let buttons = Array.from(document.querySelectorAll('.PZuss button')); //теперь мы не зависим от класса который то есть то его нет 
+            let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
+
+            console.log(buttonsFiltered);
             function follow() {
-                if (buttonsFiltered.length <= index) {
-                    return;
-                }
-                index++;
-                let button = buttonsFiltered[index];
-        
-                count++;
+                if (!buttonsFiltered.length) return;
+                let button = buttonsFiltered[index++];
+
                 button.click();
-                console.log('Current: '+count);
+                console.log('Current: ' + count++);
         
                 setTimeout(follow, coldown * 1000);
             }
@@ -87,11 +76,12 @@ class ViewModel {
             return buttonsFiltered.length;
         }
 
-        chrome.tabs.executeScript({
-            code: '(' + startFollow + ')();'
-        }, (countFollowers) => {
-            this.countFollowers(countFollowers ?? 0);
-        });
+        chrome.tabs.executeScript(
+            {
+                code: `(${startFollow})();`
+            }, 
+            (countFollowers) => this.countFollowers(countFollowers)
+        );
     }
     
     stop() {
@@ -100,23 +90,17 @@ class ViewModel {
 
     updateCountFollowers() {
         function checkFollowers() {
-            let buttons = document.querySelectorAll('.wo9IH button');
-            let buttonsFiltered = [];
-            for (let key in buttons) {
-                let button = buttons[key];
-                if ('Подписаться' === button.innerText) {
-                    buttonsFiltered.push(button);
-                }
-            }
-
+            let buttons = Array.from(document.querySelectorAll('.PZuss button')); //теперь мы не зависим от класса который то есть то его нет 
+            let buttonsFiltered = buttons.filter((button) => button.innerText === 'Подписаться');
             return buttonsFiltered.length;
         }
 
-        chrome.tabs.executeScript({
-            code: '(' + checkFollowers + ')();'
-        }, (countFollowers) => {
-            this.countFollowers(countFollowers ?? 0);
-        });
+        chrome.tabs.executeScript(
+            {
+                code: `(${checkFollowers})();`
+            }, 
+            (countFollowers) => this.countFollowers(countFollowers)
+        );
     }
 }
 
